@@ -47,7 +47,7 @@ class QuizManager:
 
     # TODO: prints the results of the most recently taken quiz
     def print_results(self):
-        pass
+        self.the_quiz.print_results(self.quiztaker)
 
     # save the results of the most recent quiz to a file
     # the file is named using the current date as

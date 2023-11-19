@@ -10,25 +10,36 @@ class QuizManager:
     def __init__(self, quizfolder):
         self.quizfolder = quizfolder
         #TODO: the most recently selected quiz
+        self.the_quiz = None
 
         #TODO: initialize the collection of quizzes
+        self.quizzes = dict()
 
         #TODO: stores the results of the most recent quiz
+        self.results = None
 
         #TODO: the name of the person taking the quiz
-
+        self.quiztaker = ""
 
         #TODO: make sure that the quiz folder exists
+        if os.path.exists(quizfolder) ==  False:
+            raise FileNotFoundError("The quiz folder does not exist!")
 
         #TODO: build the list of quizzes
+        self._build_quiz_list()
 
     def _build_quiz_list(self):
         dircontents = os.scandir(self.quizfolder)
         #TODO: parse the XML files in the directory
+        for i, f in enumerate(dircontents):
+            if f.is_file():
+                parser = quizparser.QuizParser()
+                self.quizzes[i+1] = parser.parse_quiz(f)
 
     #TODO: print a list of the currently installed quizzes
     def list_quizzes(self):
-        pass
+        for k, v in self.quizzes.items():
+            print(f"({k}): {v.name}")
 
     # start the given quiz for the user and return the results
     def take_quiz(self, quizid, username):

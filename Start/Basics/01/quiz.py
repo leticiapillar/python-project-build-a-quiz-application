@@ -5,7 +5,10 @@
 class Question:
     def __init__(self):
         # TODO: define the Question fields
-        pass
+        self.points = 0
+        self.correct_answer = ""
+        self.text = ""
+        self.is_correct = False
 
 
 class QuestionTF(Question):
@@ -19,10 +22,20 @@ class QuestionTF(Question):
             response = input("? ")
 
             # TODO: Check to see if no response was entered
+            if len(response) == 0:
+                print("Sorry, that's not a valid responde. Please try again.")
+                continue
 
             # TODO: Check to see if either T or F was given
+            response = response.lower()
+            # if response[0] != "t" and response[0] != "f":
+            if response[0] not in ['t', 'f']:
+                print("Sorry, that's not a valid responde. Please try again.")
+                continue
 
             # TODO: mark this question as correct if answered correctly
+            if response[0] == self.correct_answer:
+                self.is_correct = True
 
             break
 
@@ -31,25 +44,35 @@ class QuestioncMC(Question):
     def __init__(self):
         super().__init__()
         # TODO: define the answers for this question
+        self.answers = []
 
     # TODO: define the ask method
     def ask(self):
         while (True):
             # TODO: Present the question and possible answers
-
+            print(self.text)
+            for answer in self.answers:
+                print(f"({answer.name}) {answer.text}")
             response = input("? ")
 
             # TODO: Check to see if no response was entered
+            if len(response) == 0:
+                print("Sorry, that's not a valid responde. Please try again.")
+                continue
 
             # TODO: mark this question as correct if answered correctly
+            response = response.lower()
+            if response[0] == self.correct_answer:
+                self.is_correct = True
 
             break
 
 
 class Answer:
     def __init__(self):
-        pass
         # TODO: define the Answer fields
+        self.name = ""
+        self.text = ""
 
 
 # if __name__ == "__main__":

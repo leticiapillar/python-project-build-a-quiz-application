@@ -3,9 +3,11 @@
 from quizmanager import QuizManager
 
 class QuizApp:
+    QUIZ_FOLDER = "Quizzes"
 
     def __init__(self):
         self.username = ""
+        self.qm = QuizManager(QuizApp.QUIZ_FOLDER)
 
     def startup(self):        
         # print the greeting at startup
@@ -61,7 +63,7 @@ class QuizApp:
             elif selection[0] == 'L':
                 print("\nAvailable Quizzes Are:")
                 # TODO: list the available quizzes
-                
+                self.qm.list_quizzes()
                 print("----------------------------------\n")
                 continue
             elif selection[0] == 'T':
@@ -70,6 +72,8 @@ class QuizApp:
                     print(f"You've selected quiz {quiznum}")
 
                     # TODO: start the quiz
+                    self.qm.take_quiz(quiznum, self.username)
+                    self.qm.print_results()
 
                     # TODO: ask the user if they want to save the results
 

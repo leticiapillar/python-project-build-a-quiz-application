@@ -23,6 +23,10 @@ class Quiz:
     def print_results(self, quiztaker):
         print("*******************************************")
         # TODO: Print the results
+        print(f"RESULTS for {quiztaker}")
+        print(f"Date: {datetime.datetime.today()}")
+        print(f"Questions: {self.correct_count} out of {len(self.questions)} correct")
+        print(f"Score: {self.score} points out of possible {self.total_points}")
 
         print("*******************************************\n")
 
