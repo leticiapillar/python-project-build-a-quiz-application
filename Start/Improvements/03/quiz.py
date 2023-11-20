@@ -23,17 +23,22 @@ class Quiz:
         print("*******************************************\n")
 
     def print_results(self, quiztaker, thefile=sys.stdout):
-        print("*******************************************",
-              file=thefile, flush=True)
+        print("*******************************************",file=thefile, flush=True)
         print(f"RESULTS for {quiztaker}", file=thefile, flush=True)
         print(f"Date: {datetime.datetime.today()}", file=thefile, flush=True)
         print(f"ELAPSED TIME: {self.completion_time}", file=thefile, flush=True)
-        print(
-            f"QUESTIONS: {self.correct_count} out of {len(self.questions)} correct", file=thefile, flush=True)
-        print(f"SCORE: {self.score} points of possible {self.total_points}",
-              file=thefile, flush=True)
+        print(f"QUESTIONS: {self.correct_count} out of {len(self.questions)} correct", file=thefile, flush=True)
+        print(f"SCORE: {self.score} points of possible {self.total_points}", file=thefile, flush=True)
         print("*******************************************\n",
               file=thefile, flush=True)
+    
+    def _execute_each_question(self, questions):
+        for q in questions:
+            q.ask()
+            if (q.is_correct):
+                self.correct_count += 1
+                self.score += q.points
+            print("------------------------------------------------\n")
 
     def take_quiz(self):
         # initialize the quiz state
@@ -53,17 +58,31 @@ class Quiz:
         starttime = datetime.datetime.now()
 
         # execute each question and record the result
-        for q in self.questions:
-            q.ask()
-            if (q.is_correct):
-                self.correct_count += 1
-                self.score += q.points
-            print("------------------------------------------------\n")
+        # for q in self.questions:
+        #     q.ask()
+        #     if (q.is_correct):
+        #         self.correct_count += 1
+        #         self.score += q.points
+        #     print("------------------------------------------------\n")
+        self._execute_each_question(self.questions)
 
         # record the end time of the quiz
         endtime = datetime.datetime.now()
 
         # TODO: ask the user if they want to re-do any incorrect questions
+        if self.correct_count != len(self.questions):
+            response = input("\nIt looks like you missed some questions. Re-do wrong ones? (y/n) ")
+            response = response.upper()
+            if response[0] == "Y":
+                wrong_qs = [q for q in self.questions if q.is_correct == False]
+                # for q in wrong_qs:
+                #     q.ask()
+                #     if (q.is_correct):
+                #         self.correct_count += 1
+                #         self.score += q.points
+                #     print("------------------------------------------------\n")
+                self._execute_each_question(wrong_qs)
+                endtime = datetime.datetime.now()
 
         self.completion_time = endtime - starttime
         self.completion_time = datetime.timedelta(seconds=round(self.completion_time.total_seconds()))
